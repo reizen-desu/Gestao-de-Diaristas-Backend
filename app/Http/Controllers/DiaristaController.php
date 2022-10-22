@@ -23,4 +23,22 @@ class DiaristaController extends Controller
         $diarista = Diarista::create($request->all());
         return response($diarista, 201);
     }
+
+    public function updateDiarista(Request $request, $id) {
+        $diarista = Diarista::find($id);
+        if (is_null($diarista)) {
+            return response()->json(['message' => 'Diarista nao existe'], 404);
+        }
+        $diarista->update($request->all());
+        return response($diarista, 200);
+    }
+
+    public function deleteDiarista(Request $request, $id) {
+        $diarista = Diarista::find($id);
+        if (is_null($diarista)) {
+            return response()->json(['message' => 'Diarista nao existe'], 404);
+        }
+        $diarista->delete();
+        return response()->json(null, 204);
+    }
 }
