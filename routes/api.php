@@ -29,3 +29,9 @@ Route::get('diaristas/{id}', [DiaristaController::class, 'getDiaristaById'])->na
 
 // Add diarista
 Route::post('diaristas/', [DiaristaController::class, 'addDiarista'])->name('diaristas');
+
+// Update diarista
+Route::put('diaristas/{id}', [DiaristaController::class, 'updateDiarista'])->name('diaristas');
+
+// Delete diarista
+Route::delete('diaristas/{id}', [DiaristaController::class, 'deleteDiarista'])->name('diaristas');
