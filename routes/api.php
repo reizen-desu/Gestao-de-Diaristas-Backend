@@ -35,3 +35,25 @@ Route::put('diaristas/{id}', [DiaristaController::class, 'updateDiarista'])->nam
 
 // Delete diarista
 Route::delete('diaristas/{id}', [DiaristaController::class, 'deleteDiarista'])->name('diaristas');
+// Get all visitantes
+Route::get('visitantes/', [VisitanteController::class, 'index'])->name('visitantes');
+
+// Get visitante by id
+Route::get('visitantes/{id}', [VisitanteController::class, 'show'])->name('visitantes');
+
+// Add visitante
+Route::post('visitantes/', [VisitanteController::class, 'store'])->name('visitantes');
+
+// Update visitante
+Route::put('visitantes/{id}', [VisitanteController::class, 'update'])->name('visitantes');
+
+// Delete visitante
+Route::delete('visitantes/{id}', [VisitanteController::class, 'destroy'])->name('visitantes');
+
+
+// FALLBACK ROUTE
+
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Não existe nenhuma rota com essa rota. Verifique a sua URL.'], 404);
+});
