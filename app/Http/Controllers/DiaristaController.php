@@ -8,8 +8,10 @@ use App\Models\Diarista;
 class DiaristaController extends Controller
 {
     public function getDiarista() {
-        return Diarista::all();
+        $diaristas = Diarista::latest()->paginate(10);
+        return response()->json($diaristas, 200);
     }
+
 
     public function getDiaristaById($id) {
         $diarista = Diarista::find($id);
