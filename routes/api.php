@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiaristaController;
+use App\Http\Controllers\VisitanteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Path: routes\api.php
+// ********** FOR DIARISTAS  ENDPOINT **********
+// Path: /diaristas
+// Route::get('/diaristas', [DiaristaController::class, 'getDiarista']); Isto faz tudo o que está em baixo
+
 
 // Get all diaristas
 Route::get('diaristas/', [DiaristaController::class, 'getDiarista'])->name('diaristas');
@@ -35,6 +39,14 @@ Route::put('diaristas/{id}', [DiaristaController::class, 'updateDiarista'])->nam
 
 // Delete diarista
 Route::delete('diaristas/{id}', [DiaristaController::class, 'deleteDiarista'])->name('diaristas');
+
+
+
+
+// ********** FOR VISITANTES ENDPOINT **********
+// Path: /visitantes
+// Route::apiResource('visitantes', VisitanteController::class); // Isto faz tudo o que está abaixo
+
 // Get all visitantes
 Route::get('visitantes/', [VisitanteController::class, 'index'])->name('visitantes');
 
