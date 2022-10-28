@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('nome');
             $table->string('apelido');
             $table->string('email');
-            $table->string('senha', 100);
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('senha');
+            $table->rememberToken();
             $table->string('telefone');
             $table->string('morada');
             $table->boolean('is_disabled')->default(false);

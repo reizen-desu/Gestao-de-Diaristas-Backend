@@ -69,14 +69,28 @@ Route::get('diaristas/search/{nome}', [DiaristaController::class, 'searchDiarist
 // Path: /visitantes
 // Route::apiResource('visitantes', VisitanteController::class); // Isto faz tudo o que está abaixo
 
+// Autenticação
+
+// Register
+// Add visitante
+Route::post('visitantes/register', [VisitanteController::class, 'store'])->name('visitantes');
+
+// Login
+Route::post('visitantes/login', [VisitanteController::class, 'login'])->name('visitantes');
+
+// logout
+Route::post('visitantes/logout', [VisitanteController::class, 'logout'])->name('visitantes');
+
+// Update password
+Route::post('visitantes/actualizar-senha', [VisitanteController::class, 'updatePassword'])->name('visitantes');
+
+// ------------------------------
+
 // Get all visitantes
 Route::get('visitantes/', [VisitanteController::class, 'index'])->name('visitantes');
 
 // Get visitante by id
 Route::get('visitantes/{id}', [VisitanteController::class, 'show'])->name('visitantes');
-
-// Add visitante
-Route::post('visitantes/', [VisitanteController::class, 'store'])->name('visitantes');
 
 // Update visitante
 Route::put('visitantes/{id}', [VisitanteController::class, 'update'])->name('visitantes');
@@ -84,10 +98,14 @@ Route::put('visitantes/{id}', [VisitanteController::class, 'update'])->name('vis
 // Delete visitante
 Route::delete('visitantes/{id}', [VisitanteController::class, 'destroy'])->name('visitantes');
 
+// Search visitante by name
+Route::get('visitantes/search/{nome}', [VisitanteController::class, 'searchVisitante'])->name('visitantes');
+
 
 // FALLBACK ROUTE
 
 Route::fallback(function () {
     return response()->json([
-        'message' => 'Não existe nenhuma rota com essa rota. Verifique a sua URL.'], 404);
+        'message' => 'Não existe nenhuma rota com essa rota. Verifique a sua URL.'
+    ], 404);
 });

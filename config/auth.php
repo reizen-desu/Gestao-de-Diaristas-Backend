@@ -44,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'diaristas',
         ],
+        'visitante' => [
+            'driver' => 'session',
+            'provider' => 'visitantes',
+        ],
     ],
 
     /*
@@ -67,6 +71,14 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'diaristas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Diarista::class,
+        ],
+        'visitantes' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Visitante::class,
         ],
 
         // 'users' => [
@@ -97,7 +109,23 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        'diaristas' => [
+            'provider' => 'diaristas',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'visitantes' => [
+            'provider' => 'visitantes',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
+
+
 
     /*
     |--------------------------------------------------------------------------
