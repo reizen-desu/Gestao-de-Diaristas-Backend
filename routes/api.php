@@ -20,10 +20,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
+
+
 // ********** FOR DIARISTAS  ENDPOINT **********
 // Path: /diaristas
 // Route::get('/diaristas', [DiaristaController::class, 'getDiarista']); Isto faz tudo o que está em baixo
 
+// Autenticação
+
+// Registar
+
+// Login
+Route::post('/diaristas/login', [DiaristaController::class, 'loginDiarista']);
+
+// Update password
+Route::put('/diaristas/actualizar-senha', [DiaristaController::class, 'updateDiaristaPassword']);
+
+
+// -----------------------------
 
 // Get all diaristas
 Route::get('diaristas/', [DiaristaController::class, 'getDiarista'])->name('diaristas');
@@ -32,14 +48,20 @@ Route::get('diaristas/', [DiaristaController::class, 'getDiarista'])->name('diar
 Route::get('diaristas/{id}', [DiaristaController::class, 'getDiaristaById'])->name('diaristas');
 
 // Add diarista
-Route::post('diaristas/', [DiaristaController::class, 'addDiarista'])->name('diaristas');
+Route::post('diaristas/register', [DiaristaController::class, 'addDiarista'])->name('diaristas')->middleware('auth:sanctum');
 
 // Update diarista
 Route::put('diaristas/{id}', [DiaristaController::class, 'updateDiarista'])->name('diaristas');
 
+// Update profile picture
+Route::put('diaristas/{id}/foto-perfil', [DiaristaController::class, 'updateDiaristaPhoto'])->name('diaristas');
+
+
 // Delete diarista
 Route::delete('diaristas/{id}', [DiaristaController::class, 'deleteDiarista'])->name('diaristas');
 
+// Search diarista by name
+Route::get('diaristas/search/{nome}', [DiaristaController::class, 'searchDiarista'])->name('diaristas');
 
 
 
