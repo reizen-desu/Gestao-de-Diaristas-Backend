@@ -28,15 +28,15 @@ class DiaristaController extends Controller
         return response()->json($diarista, 200);
     }
 
-    public function addDiarista(Request $request)
+    public function registerDiarista(Request $request)
     {
 
         $request->validate([
             'nome' => 'required',
             'apelido' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:diaristas',
             'senha' => 'required|min:6',
-            'data_nascimento' => 'required|date',
+            'data_nascimento' => 'nullable|date',
             'sexo' => 'required|in:M,F',
             'telefone' => 'required|numeric',
             'foto_usuario' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
@@ -48,7 +48,8 @@ class DiaristaController extends Controller
             'nome' => $request->nome,
             'apelido' => $request->apelido,
             'email' => $request->email,
-            'senha' => bcrypt($request->senha),
+            // 'senha' => bcrypt($request->senha),
+            'senha' => Hash::make($request->senha),
             'data_nascimento' => $request->data_nascimento,
             'sexo' => $request->sexo,
             'telefone' => $request->telefone,
@@ -56,7 +57,6 @@ class DiaristaController extends Controller
             'descricao' => $request->descricao,
             'morada' => $request->morada,
         ]);
-
 
         return response()->json([
             "status" => "success",
@@ -123,9 +123,20 @@ class DiaristaController extends Controller
         }
     }
 
+    public function logoutDiarista(Request $request)
+    {
+
+        $request->user()->currentAccessToken()->delete();
+        $request->session()->flush();
+        return response()->json([
+            "status" => "success",
+            "message" => "Logout realizado com sucesso"
+        ], 200);
+    }
+
     public function updateDiaristaPassword(Request $request, $id)
     {
-        $diarista = Diarista::find($id);
+        $diarista = Diarista::where('id', $id)->first();
         if (is_null($diarista)) {
             return response()->json(['message' => 'Diarista nao existe'], 404);
         }
@@ -134,13 +145,14 @@ class DiaristaController extends Controller
             'senha' => 'required|min:6',
         ]);
 
-        $diarista->senha = bcrypt($request->senha);
+        // $diarista->senha = bcrypt($request->senha);
+        $diarista->senha = Hash::make($request->senha);
         $diarista->save();
 
         return response()->json([
             "status" => "success",
-            "message" => "Senha do diarista com id $id actualizada com sucesso"
-        ], 204);
+            "message" => "Senha actualizada com sucesso"
+        ], 200);
     }
 
     public function updateDiaristaPhoto(Request $request, $id)
