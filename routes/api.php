@@ -31,12 +31,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Autenticação
 
 // Registar
+Route::post('diaristas/register', [DiaristaController::class, 'registerDiarista'])->name('diaristas');
+
 
 // Login
 Route::post('/diaristas/login', [DiaristaController::class, 'loginDiarista']);
 
+// Logout
+Route::post('diaristas/logout', [DiaristaController::class, 'logout'])->name('diaristas');
+
 // Update password
-Route::put('/diaristas/actualizar-senha', [DiaristaController::class, 'updateDiaristaPassword']);
+Route::put('/diaristas/actualizar-senha/{id}', [DiaristaController::class, 'updateDiaristaPassword'])->middleware('auth:sanctum');
 
 
 // -----------------------------
@@ -48,14 +53,17 @@ Route::get('diaristas/', [DiaristaController::class, 'getDiarista'])->name('diar
 Route::get('diaristas/{id}', [DiaristaController::class, 'getDiaristaById'])->name('diaristas');
 
 // Add diarista
-Route::post('diaristas/register', [DiaristaController::class, 'addDiarista'])->name('diaristas')->middleware('auth:sanctum');
+Route::post('diaristas/register', [DiaristaController::class, 'addDiarista'])->name('diaristas');
 
 // Update diarista
 Route::put('diaristas/{id}', [DiaristaController::class, 'updateDiarista'])->name('diaristas');
 
 // Update profile picture
-Route::put('diaristas/{id}/foto-perfil', [DiaristaController::class, 'updateDiaristaPhoto'])->name('diaristas');
+Route::put('diaristas/{id}/foto-perfil', [DiaristaController::class, 'updateDiaristaPhoto'])->name('diaristas')->middleware('auth:sanctum');
 
+
+// Search diarista
+Route::get('diaristas/search/{nome}', [DiaristaController::class, 'searchDiaristas'])->name('diaristas');
 
 // Delete diarista
 Route::delete('diaristas/{id}', [DiaristaController::class, 'deleteDiarista'])->name('diaristas');
@@ -72,7 +80,6 @@ Route::get('diaristas/search/{nome}', [DiaristaController::class, 'searchDiarist
 // Autenticação
 
 // Register
-// Add visitante
 Route::post('visitantes/register', [VisitanteController::class, 'store'])->name('visitantes');
 
 // Login
