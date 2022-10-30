@@ -20,12 +20,12 @@ return new class extends Migration
             $table->string('apelido', 40);
             $table->string('email', 100)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('senha', 32);
+            $table->string('senha');
             $table->rememberToken();
-            $table->date('data_nascimento');
+            $table->date('data_nascimento')->nullable();
             $table->char('sexo', 1)->comment('M - Masculino, F - Feminino')->default('F');
             $table->string('telefone', 11);
-            $table->string('foto_usuario', 100)->default('diarista.png');
+            $table->string('foto_usuario', 100)->default('diarista.png')->nullable();
             $table->integer('nr_acessos')->default(0);
             $table->boolean('is_public')->default(true);
             $table->boolean('is_disabled')->default(false);

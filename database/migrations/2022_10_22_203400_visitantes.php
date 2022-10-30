@@ -17,12 +17,12 @@ return new class extends Migration
             $table->increments('id');
             $table->string('nome');
             $table->string('apelido');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('senha');
             $table->rememberToken();
-            $table->string('telefone');
-            $table->string('morada');
+            $table->string('telefone')->nullable();
+            $table->string('morada')->nullable();
             $table->boolean('is_disabled')->default(false);
             $table->timestamps();
         });
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('visitantes');
     }
 };
