@@ -82,7 +82,7 @@ class VisitanteController extends Controller
      */
     public function show($id)
     {
-        $visitante = Visitante::find($id)::where('is_disabled', false);
+        $visitante = Visitante::where('is_disabled', false)->find($id);
         if (is_null($visitante)) {
             return response()->json(['message' => 'Visitante nao encontrado'], 404);
         }
