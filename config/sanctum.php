@@ -33,8 +33,8 @@ return [
     |
     */
 
-    'guard' => ['web', 'diarista', 'visitante'],
-    // 'guard' => null,
+    // 'guard' => ['web', 'diarista', 'visitante'],
+    'guard' => null,
 
     /*
     |--------------------------------------------------------------------------
