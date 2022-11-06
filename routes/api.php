@@ -93,18 +93,25 @@ Route::post('visitantes/logout', [VisitanteController::class, 'logout'])->name('
 Route::post('visitantes/actualizar-senha', [VisitanteController::class, 'updatePassword'])->name('visitantes');
 
 // ------------------------------
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    // Get all visitantes
+    Route::get('visitantes', [VisitanteController::class, 'index'])->name('visitantes');
 
-// Get all visitantes
-Route::get('visitantes/', [VisitanteController::class, 'index'])->name('visitantes');
+    // Get visitante by id
+    Route::get('visitantes/{id}', [VisitanteController::class, 'show'])->name('visitantes');
 
-// Get visitante by id
-Route::get('visitantes/{id}', [VisitanteController::class, 'show'])->name('visitantes');
+    // Update visitante
+    Route::put('visitantes/{id}', [VisitanteController::class, 'update'])->name('visitantes');
 
-// Update visitante
-Route::put('visitantes/{id}', [VisitanteController::class, 'update'])->name('visitantes');
+    // Update profile picture
+    Route::put('visitantes/{id}/foto-perfil', [VisitanteController::class, 'updatePhoto'])->name('visitantes');
 
-// Delete visitante
-Route::delete('visitantes/{id}', [VisitanteController::class, 'destroy'])->name('visitantes');
+    // Delete visitante
+    Route::delete('visitantes/{id}', [VisitanteController::class, 'destroy'])->name('visitantes');
+
+    // Search visitante by name
+    Route::get('visitantes/search/{nome}', [VisitanteController::class, 'searchVisitante'])->name('visitantes');
+});
 
 // ############################# SOLICITATION ENDPOINT #############################
 // Path: /solicitacoes
@@ -124,8 +131,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
 
-// FALLBACK ROUTE
 
+// FALLBACK ROUTE
 Route::fallback(function () {
     return response()->json([
         'message' => 'Não existe nenhuma rota com essa rota. Verifique a sua URL.'
