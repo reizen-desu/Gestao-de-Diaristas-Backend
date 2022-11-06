@@ -105,8 +105,22 @@ Route::put('visitantes/{id}', [VisitanteController::class, 'update'])->name('vis
 // Delete visitante
 Route::delete('visitantes/{id}', [VisitanteController::class, 'destroy'])->name('visitantes');
 
-// Search visitante by name
-Route::get('visitantes/search/{nome}', [VisitanteController::class, 'searchVisitante'])->name('visitantes');
+// ############################# SOLICITATION ENDPOINT #############################
+// Path: /solicitacoes
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+
+    // Send a notification to diarista
+    Route::post('visitante/solicitacoes/{id_diarista}', [SolicitationController::class, 'enviarSolicitacao'])->name('solicitacoes');
+
+    // List all solicitations from visitantes
+    Route::get('diarista/solicitacoes', [SolicitationController::class, 'listarSolicitacoes'])->name('solicitacoes');
+
+    // Accept a solicitation as diarista
+    Route::post('diarista/solicitacoes/{id_solicitacao}', [SolicitationController::class, 'aceitarSolicitacao'])->name('solicitacoes');
+});
+
+
 
 
 // FALLBACK ROUTE
