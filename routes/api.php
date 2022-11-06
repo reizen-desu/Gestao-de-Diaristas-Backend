@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiaristaController;
 use App\Http\Controllers\VisitanteController;
+use App\Http\Controllers\SolicitationController;
 
 /*
 |--------------------------------------------------------------------------
