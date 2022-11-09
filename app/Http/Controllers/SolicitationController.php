@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Diarista;
 use App\Models\Visitante;
+use Illuminate\Support\Facades\DB;
 
 class SolicitationController extends Controller
 {
@@ -33,4 +34,24 @@ class SolicitationController extends Controller
         ], 200);
     }
 
+    // A diariasta aceita a solicitação
+    public function aceitarSolicitacao(Request $request, $id_solicitacao)
+    {
+
+        // Grab reply from request
+        $resposta = $request->resposta;
+
+        // Update na tabela diarista_visitante apenas para o id da solicitação
+        $solicitacao = DB::table('diarista_visitante')
+            ->where('id', $id_solicitacao)
+            ->update(['status' => 'A'], ['resposta' => $resposta]);
+
+
+        return response()->json([
+            'status' => 'success',
+            'mensagem' => 'A solicitação com o id ' . $id_solicitacao . ' foi aceite',
+            'resposta' => $resposta,
+            'solicitacao' => $solicitacao,
+        ], 200);
+    }
 }

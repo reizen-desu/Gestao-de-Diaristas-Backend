@@ -130,7 +130,19 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('diarista/solicitacoes', [SolicitationController::class, 'listarSolicitacoes'])->name('solicitacoes');
 
     // Accept a solicitation as diarista
-    Route::post('diarista/solicitacoes/{id_solicitacao}', [SolicitationController::class, 'aceitarSolicitacao'])->name('solicitacoes');
+    Route::post('diarista/solicitacoes/aceitar/{id_solicitacao}', [SolicitationController::class, 'aceitarSolicitacao'])->name('solicitacoes');
+
+    // Reject a solicitation as diarista
+    Route::post('diarista/solicitacoes/rejeitar/{id_solicitacao}', [SolicitationController::class, 'rejeitarSolicitacao'])->name('solicitacoes');
+
+    // List all unread solicitations
+    Route::get('solicitacoes/nao-lidas', [SolicitationController::class, 'listarSolicitacoesNaoLidas'])->name('solicitacoes');
+
+    // List all rejected solicitations
+    Route::get('solicitacoes/rejeitadas', [SolicitationController::class, 'listarSolicitacoesRejeitadas'])->name('solicitacoes');
+
+    // List all accepted solicitations
+    Route::get('solicitacoes/aceites', [SolicitationController::class, 'listarSolicitacoesAceites'])->name('solicitacoes');
 });
 
 
