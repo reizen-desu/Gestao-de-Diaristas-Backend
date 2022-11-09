@@ -74,4 +74,35 @@ class SolicitationController extends Controller
         ], 200);
     }
 
+    public function cancelarSolicitacao(Request $request)
+    {
+        $visitante = Visitante::find($request->visitante_id);
+        $diarista = Diarista::find($request->diarista_id);
+
+        $visitante->diaristas()->detach($diarista);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => 'Solicitação cancelada com sucesso'
+        ], 200);
+    }
+
+    // Esta função irá retornar as solicitações que o visitante fez 
+    public function listarSolicitacoes()
+    {
+
+        $diarista = Diarista::find(Auth::id());
+
+        $solicitacao = DB::table('diarista_visitante')
+            ->where('diarista_id', Auth::id())
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $solicitacao,
+            // 'diarista' => $diarista
+        ], 200);
+    }
+
+
 }
