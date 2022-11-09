@@ -10,7 +10,8 @@ class DiaristaController extends Controller
 {
     public function getDiarista()
     {
-        $diaristas = Diarista::where('is_disabled', false)->latest()->paginate(10);
+        $diaristas = Diarista::where('is_disabled', false)->latest()->get();
+        // $diaristas = Diarista::where('is_disabled', false)->latest()->paginate(10);
         return response()->json([
             'status' => 'success',
             'data' => $diaristas
@@ -23,7 +24,10 @@ class DiaristaController extends Controller
         $diarista = Diarista::where('is_disabled', false)->find($id);
 
         if (is_null($diarista)) {
-            return response()->json(['message' => 'Diarista nao encontrado'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Diarista nao encontrado'
+            ], 404);
         }
         return response()->json($diarista, 200);
     }
@@ -60,6 +64,7 @@ class DiaristaController extends Controller
 
         return response()->json([
             "status" => "success",
+            "token" => $diarista->createToken('authToken')->plainTextToken,
             "data" => $diarista
         ], 201);
     }
@@ -89,9 +94,17 @@ class DiaristaController extends Controller
         ], 204);
     }
 
+    public function userProfile(Request $request)
+    {
+        return $request->user();
+    }
+
     public function searchDiarista($nome)
     {
-        $diarista = Diarista::where('nome', 'like', '%' . $nome . '%')->where('is_disabled', false)->get();
+        $diarista = Diarista::where('is_disabled', false)
+            ->where('nome', 'like', '%' . $nome . '%')
+            ->orWhere('apelido', 'like', '%' . $nome . '%')
+            ->get();
         if (is_null($diarista)) {
             return response()->json(['message' => 'Diarista nao encontrado'], 404);
         }
@@ -145,7 +158,6 @@ class DiaristaController extends Controller
             'senha' => 'required|min:6',
         ]);
 
-        // $diarista->senha = bcrypt($request->senha);
         $diarista->senha = Hash::make($request->senha);
         $diarista->save();
 
@@ -162,9 +174,9 @@ class DiaristaController extends Controller
             return response()->json(['message' => 'Diarista nao existe'], 404);
         }
 
-        $request->validate([
+        /* $request->validate([
             'foto_usuario' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
-        ]);
+        ]); */
 
         $diarista->foto_usuario = $request->foto_usuario;
         $diarista->save();
@@ -173,5 +185,20 @@ class DiaristaController extends Controller
             "status" => "success",
             "message" => "Foto do diarista com id $id actualizada com sucesso"
         ], 204);
+    }
+
+
+    public function listarDiaristas()
+    {
+        $total = Diarista::count();
+        $diaristas_activas = Diarista::where('is_disabled', false)->get();
+        $diaristas_desactivadas = Diarista::where('is_disabled', true)->get();
+
+
+        return response()->json([
+            'Total de diaristas: ' => $total,
+            'Contas activas: ' => count($diaristas_activas),
+            'Contas desactivadas: ' => count($diaristas_desactivadas),
+        ], 200);
     }
 }

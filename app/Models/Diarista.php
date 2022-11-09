@@ -12,6 +12,12 @@ class Diarista extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function visitantes()
+    {
+        // return $this->belongsToMany(Visitante::class, 'diarista_visitante', 'diarista_id', 'visitante_id');
+        return $this->belongsToMany(Visitante::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

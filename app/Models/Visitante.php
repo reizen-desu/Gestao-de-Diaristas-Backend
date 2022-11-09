@@ -11,6 +11,14 @@ use Laravel\Sanctum\HasApiTokens;
 class Visitante extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    public function diaristas()
+    {
+        // return $this->belongsToMany(Diarista::class, 'diarista_visitante', 'visitante_id', 'diarista_id');
+        return $this->belongsToMany(Diarista::class);
+    }
+
+
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

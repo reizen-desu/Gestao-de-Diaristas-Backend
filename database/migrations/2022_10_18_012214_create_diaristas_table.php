@@ -23,9 +23,11 @@ return new class extends Migration
             $table->string('senha');
             $table->rememberToken();
             $table->date('data_nascimento')->nullable();
-            $table->char('sexo', 1)->comment('M - Masculino, F - Feminino')->default('F');
+            $table->char('sexo', 1)->default('F');
             $table->string('telefone', 11);
-            $table->string('foto_usuario', 100)->default('diarista.png')->nullable();
+            $table->string('foto_usuario', 1000)
+                ->default('https://gamberine.com.br/allclean/wp-content/uploads/2018/06/WhatsApp-Image-2018-06-13-at-15.32.43-1.jpeg')
+                ->nullable();
             $table->integer('nr_acessos')->default(0);
             $table->boolean('is_public')->default(true);
             $table->boolean('is_disabled')->default(false);

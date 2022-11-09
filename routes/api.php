@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiaristaController;
 use App\Http\Controllers\VisitanteController;
+use App\Http\Controllers\SolicitationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,12 +34,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Registar
 Route::post('diaristas/register', [DiaristaController::class, 'registerDiarista'])->name('diaristas');
 
-
 // Login
 Route::post('/diaristas/login', [DiaristaController::class, 'loginDiarista']);
 
+// My Profile
+Route::get('/diarista/profile', [DiaristaController::class, 'userProfile'])->middleware('auth:sanctum');
+
 // Logout
-Route::post('diaristas/logout', [DiaristaController::class, 'logout'])->name('diaristas');
+Route::post('diarista/logout', [DiaristaController::class, 'logout'])->name('diaristas');
 
 // Update password
 Route::put('/diaristas/actualizar-senha/{id}', [DiaristaController::class, 'updateDiaristaPassword'])->middleware('auth:sanctum');
@@ -53,7 +56,7 @@ Route::get('diaristas/', [DiaristaController::class, 'getDiarista'])->name('diar
 Route::get('diaristas/{id}', [DiaristaController::class, 'getDiaristaById'])->name('diaristas');
 
 // Add diarista
-Route::post('diaristas/register', [DiaristaController::class, 'addDiarista'])->name('diaristas');
+Route::post('diaristas/register', [DiaristaController::class, 'registerDiarista'])->name('diaristas');
 
 // Update diarista
 Route::put('diaristas/{id}', [DiaristaController::class, 'updateDiarista'])->name('diaristas');
@@ -85,6 +88,9 @@ Route::post('visitantes/register', [VisitanteController::class, 'store'])->name(
 // Login
 Route::post('visitantes/login', [VisitanteController::class, 'login'])->name('visitantes');
 
+// My Profile
+Route::get('visitante/profile', [VisitanteController::class, 'userProfile'])->middleware('auth:sanctum');
+
 // logout
 Route::post('visitantes/logout', [VisitanteController::class, 'logout'])->name('visitantes');
 
@@ -92,25 +98,67 @@ Route::post('visitantes/logout', [VisitanteController::class, 'logout'])->name('
 Route::post('visitantes/actualizar-senha', [VisitanteController::class, 'updatePassword'])->name('visitantes');
 
 // ------------------------------
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    // Get all visitantes
+    Route::get('visitantes', [VisitanteController::class, 'index'])->name('visitantes');
 
-// Get all visitantes
-Route::get('visitantes/', [VisitanteController::class, 'index'])->name('visitantes');
+    // Get visitante by id
+    Route::get('visitantes/{id}', [VisitanteController::class, 'show'])->name('visitantes');
 
-// Get visitante by id
-Route::get('visitantes/{id}', [VisitanteController::class, 'show'])->name('visitantes');
+    // Update visitante
+    Route::put('visitantes/{id}', [VisitanteController::class, 'update'])->name('visitantes');
 
-// Update visitante
-Route::put('visitantes/{id}', [VisitanteController::class, 'update'])->name('visitantes');
+    // Update profile picture
+    Route::put('visitantes/{id}/foto-perfil', [VisitanteController::class, 'updatePhoto'])->name('visitantes');
 
-// Delete visitante
-Route::delete('visitantes/{id}', [VisitanteController::class, 'destroy'])->name('visitantes');
+    // Delete visitante
+    Route::delete('visitantes/{id}', [VisitanteController::class, 'destroy'])->name('visitantes');
 
-// Search visitante by name
-Route::get('visitantes/search/{nome}', [VisitanteController::class, 'searchVisitante'])->name('visitantes');
+    // Search visitante by name
+    Route::get('visitantes/search/{nome}', [VisitanteController::class, 'searchVisitante'])->name('visitantes');
+});
+
+// ############################# SOLICITATION ENDPOINT #############################
+// Path: /solicitacoes
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+
+    // Send a notification to diarista
+    Route::post('visitante/solicitacoes/{id_diarista}', [SolicitationController::class, 'enviarSolicitacao'])->name('solicitacoes');
+
+    // List all solicitations from visitantes
+    Route::get('diarista/solicitacoes', [SolicitationController::class, 'listarSolicitacoes'])->name('solicitacoes');
+
+    // Accept a solicitation as diarista
+    Route::post('diarista/solicitacoes/aceitar/{id_solicitacao}', [SolicitationController::class, 'aceitarSolicitacao'])->name('solicitacoes');
+
+    // Reject a solicitation as diarista
+    Route::post('diarista/solicitacoes/rejeitar/{id_solicitacao}', [SolicitationController::class, 'rejeitarSolicitacao'])->name('solicitacoes');
+
+    // List all unread solicitations
+    Route::get('solicitacoes/nao-lidas', [SolicitationController::class, 'listarSolicitacoesNaoLidas'])->name('solicitacoes');
+
+    // List all rejected solicitations
+    Route::get('solicitacoes/rejeitadas', [SolicitationController::class, 'listarSolicitacoesRejeitadas'])->name('solicitacoes');
+
+    // List all accepted solicitations
+    Route::get('solicitacoes/aceites', [SolicitationController::class, 'listarSolicitacoesAceites'])->name('solicitacoes');
+});
+
+// ############################# SOLICITATION ENDPOINT #############################
+// Path: /admin
+
+Route::prefix('admin')->group(function () {
+    // Get all registered diaristas
+    Route::get('diaristas', [DiaristaController::class, 'listarDiaristas'])->name('admin');
+
+    // Get all registered visitantes
+    Route::get('visitantes', [VisitanteController::class, 'listarVisitantes'])->name('admin');
+});
+
 
 
 // FALLBACK ROUTE
-
 Route::fallback(function () {
     return response()->json([
         'message' => 'Não existe nenhuma rota com essa rota. Verifique a sua URL.'
