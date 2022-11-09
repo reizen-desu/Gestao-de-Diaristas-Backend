@@ -234,4 +234,18 @@ class VisitanteController extends Controller
             'data' => $visitante
         ], 200);
     }
+
+    public function listarVisitantes()
+    {
+        $total = Visitante::count();
+        $visitantes_activas = Visitante::where('is_disabled', false)->get();
+        $visitantes_desactivadas = Visitante::where('is_disabled', true)->get();
+
+
+        return response()->json([
+            'Total de visitantes: ' => $total,
+            'Contas activas: ' => count($visitantes_activas),
+            'Contas desactivadas: ' => count($visitantes_desactivadas),
+        ], 200);
+    }
 }

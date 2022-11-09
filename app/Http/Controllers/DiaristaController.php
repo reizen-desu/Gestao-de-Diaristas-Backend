@@ -174,4 +174,19 @@ class DiaristaController extends Controller
             "message" => "Foto do diarista com id $id actualizada com sucesso"
         ], 204);
     }
+
+
+    public function listarDiaristas()
+    {
+        $total = Diarista::count();
+        $diaristas_activas = Diarista::where('is_disabled', false)->get();
+        $diaristas_desactivadas = Diarista::where('is_disabled', true)->get();
+
+
+        return response()->json([
+            'Total de diaristas: ' => $total,
+            'Contas activas: ' => count($diaristas_activas),
+            'Contas desactivadas: ' => count($diaristas_desactivadas),
+        ], 200);
+    }
 }

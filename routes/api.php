@@ -145,7 +145,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('solicitacoes/aceites', [SolicitationController::class, 'listarSolicitacoesAceites'])->name('solicitacoes');
 });
 
+// ############################# SOLICITATION ENDPOINT #############################
+// Path: /admin
 
+Route::prefix('admin')->group(function () {
+    // Get all registered diaristas
+    Route::get('diaristas', [DiaristaController::class, 'listarDiaristas'])->name('admin');
+
+    // Get all registered visitantes
+    Route::get('visitantes', [VisitanteController::class, 'listarVisitantes'])->name('admin');
+});
 
 
 
