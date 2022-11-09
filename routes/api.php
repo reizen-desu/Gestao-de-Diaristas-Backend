@@ -34,12 +34,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Registar
 Route::post('diaristas/register', [DiaristaController::class, 'registerDiarista'])->name('diaristas');
 
-
 // Login
 Route::post('/diaristas/login', [DiaristaController::class, 'loginDiarista']);
 
+// My Profile
+Route::get('/diarista/profile', [DiaristaController::class, 'userProfile'])->middleware('auth:sanctum');
+
 // Logout
-Route::post('diaristas/logout', [DiaristaController::class, 'logout'])->name('diaristas');
+Route::post('diarista/logout', [DiaristaController::class, 'logout'])->name('diaristas');
 
 // Update password
 Route::put('/diaristas/actualizar-senha/{id}', [DiaristaController::class, 'updateDiaristaPassword'])->middleware('auth:sanctum');
@@ -54,7 +56,7 @@ Route::get('diaristas/', [DiaristaController::class, 'getDiarista'])->name('diar
 Route::get('diaristas/{id}', [DiaristaController::class, 'getDiaristaById'])->name('diaristas');
 
 // Add diarista
-Route::post('diaristas/register', [DiaristaController::class, 'addDiarista'])->name('diaristas');
+Route::post('diaristas/register', [DiaristaController::class, 'registerDiarista'])->name('diaristas');
 
 // Update diarista
 Route::put('diaristas/{id}', [DiaristaController::class, 'updateDiarista'])->name('diaristas');
@@ -85,6 +87,9 @@ Route::post('visitantes/register', [VisitanteController::class, 'store'])->name(
 
 // Login
 Route::post('visitantes/login', [VisitanteController::class, 'login'])->name('visitantes');
+
+// My Profile
+Route::get('visitante/profile', [VisitanteController::class, 'userProfile'])->middleware('auth:sanctum');
 
 // logout
 Route::post('visitantes/logout', [VisitanteController::class, 'logout'])->name('visitantes');
