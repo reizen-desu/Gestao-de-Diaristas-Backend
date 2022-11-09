@@ -105,4 +105,62 @@ class SolicitationController extends Controller
     }
 
 
+    public function listarSolicitacoesAceites(Request $request)
+    {
+        $solicitacoes = DB::table('diarista_visitante')
+            ->join('diaristas', 'diaristas.id', '=', 'diarista_visitante.diarista_id')
+            ->join('visitantes', 'visitantes.id', '=', 'diarista_visitante.visitante_id')
+            ->select('diarista_visitante.*', 'diaristas.nome as nome_diarista', 'visitantes.nome as nome_visitante')
+            ->where('diarista_visitante.status', 'A')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $solicitacoes
+        ], 200);
+    }
+
+    public function listarSolicitacoesNaoLidas()
+    {
+
+        $solicitacoes = DB::table('diarista_visitante')
+            ->join('diaristas', 'diaristas.id', '=', 'diarista_visitante.diarista_id')
+            ->join('visitantes', 'visitantes.id', '=', 'diarista_visitante.visitante_id')
+            ->select('diarista_visitante.*', 'diaristas.nome as nome_diarista', 'visitantes.nome as nome_visitante')
+            ->where('diarista_visitante.status', 'U')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $solicitacoes
+        ], 200);
+    }
+
+
+    public function listarSolicitacoesRejeitadas()
+    {
+        $solicitacoes = DB::table('diarista_visitante')
+            ->join('diaristas', 'diaristas.id', '=', 'diarista_visitante.diarista_id')
+            ->join('visitantes', 'visitantes.id', '=', 'diarista_visitante.visitante_id')
+            ->select('diarista_visitante.*', 'diaristas.nome as nome_diarista', 'visitantes.nome as nome_visitante')
+            ->where('diarista_visitante.status', 'R')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $solicitacoes
+        ], 200);
+    }
+
+    public function listarSolicitacoesCanceladas(Request $request)
+    {
+        $visitante = Visitante::find($request->visitante_id);
+
+        $solicitacoes = $visitante->diaristas()->wherePivot('status', 'C')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $solicitacoes
+        ], 200);
+    }
 }
