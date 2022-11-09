@@ -10,7 +10,8 @@ class DiaristaController extends Controller
 {
     public function getDiarista()
     {
-        $diaristas = Diarista::where('is_disabled', false)->latest()->paginate(10);
+        $diaristas = Diarista::where('is_disabled', false)->latest()->get();
+        // $diaristas = Diarista::where('is_disabled', false)->latest()->paginate(10);
         return response()->json([
             'status' => 'success',
             'data' => $diaristas
@@ -23,7 +24,10 @@ class DiaristaController extends Controller
         $diarista = Diarista::where('is_disabled', false)->find($id);
 
         if (is_null($diarista)) {
-            return response()->json(['message' => 'Diarista nao encontrado'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Diarista nao encontrado'
+            ], 404);
         }
         return response()->json($diarista, 200);
     }
@@ -60,6 +64,7 @@ class DiaristaController extends Controller
 
         return response()->json([
             "status" => "success",
+            "token" => $diarista->createToken('authToken')->plainTextToken,
             "data" => $diarista
         ], 201);
     }
