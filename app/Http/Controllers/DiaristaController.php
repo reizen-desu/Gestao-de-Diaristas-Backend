@@ -94,9 +94,17 @@ class DiaristaController extends Controller
         ], 204);
     }
 
+    public function userProfile(Request $request)
+    {
+        return $request->user();
+    }
+
     public function searchDiarista($nome)
     {
-        $diarista = Diarista::where('nome', 'like', '%' . $nome . '%')->where('is_disabled', false)->get();
+        $diarista = Diarista::where('is_disabled', false)
+            ->where('nome', 'like', '%' . $nome . '%')
+            ->orWhere('apelido', 'like', '%' . $nome . '%')
+            ->get();
         if (is_null($diarista)) {
             return response()->json(['message' => 'Diarista nao encontrado'], 404);
         }
@@ -150,7 +158,6 @@ class DiaristaController extends Controller
             'senha' => 'required|min:6',
         ]);
 
-        // $diarista->senha = bcrypt($request->senha);
         $diarista->senha = Hash::make($request->senha);
         $diarista->save();
 
@@ -167,9 +174,9 @@ class DiaristaController extends Controller
             return response()->json(['message' => 'Diarista nao existe'], 404);
         }
 
-        $request->validate([
+        /* $request->validate([
             'foto_usuario' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
-        ]);
+        ]); */
 
         $diarista->foto_usuario = $request->foto_usuario;
         $diarista->save();

@@ -160,6 +160,11 @@ class VisitanteController extends Controller
         }
     }
 
+    public function userProfile(Request $request)
+    {
+        return $request->user();
+    }
+
     public function logout(Request $request)
     {
         $request->session()->flush();
