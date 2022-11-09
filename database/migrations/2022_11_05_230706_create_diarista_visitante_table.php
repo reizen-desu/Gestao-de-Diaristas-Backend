@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('diarista_id');
             $table->unsignedInteger('visitante_id');
             $table->string('mensagem', 500)->nullable();
+            $table->string('resposta', 500)->nullable();
             $table->char('status', 1)->default('U');
             $table->timestamps();
         });
