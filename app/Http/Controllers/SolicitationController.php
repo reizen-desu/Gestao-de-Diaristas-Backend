@@ -54,4 +54,24 @@ class SolicitationController extends Controller
             'solicitacao' => $solicitacao,
         ], 200);
     }
+
+    public function rejeitarSolicitacao(Request $request, $id_solicitacao)
+    {
+
+        // Grab reply from request
+        $resposta = $request->resposta;
+
+        // Update na tabela diarista_visitante apenas para o id da solicitação
+        DB::table('diarista_visitante')
+            ->where('id', $id_solicitacao)
+            ->update(['status' => 'R'], ['resposta' => $resposta]);
+
+
+        return response()->json([
+            'status' => 'success',
+            'data' => 'A solicitação com o id ' . $id_solicitacao . ' foi rejeitada',
+            'resposta' => $resposta,
+        ], 200);
+    }
+
 }
