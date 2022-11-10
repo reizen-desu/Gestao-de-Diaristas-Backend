@@ -31,6 +31,8 @@ return new class extends Migration
             $table->integer('nr_acessos')->default(0);
             $table->boolean('is_public')->default(true);
             $table->boolean('is_disabled')->default(false);
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('is_diarista')->default(true);
             $table->string('descricao', 1000)->nullable();
             $table->string('morada', 100)->nullable();
 

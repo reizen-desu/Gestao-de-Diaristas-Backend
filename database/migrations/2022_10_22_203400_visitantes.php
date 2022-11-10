@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('telefone')->nullable();
             $table->string('morada')->nullable();
             $table->boolean('is_disabled')->default(false);
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('is_diarista')->default(false);
             $table->timestamps();
         });
     }
