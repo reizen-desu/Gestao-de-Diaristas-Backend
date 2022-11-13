@@ -145,7 +145,7 @@ class VisitanteController extends Controller
         $visitante = Visitante::where('email', $request->email)->first();
 
         if (is_null($visitante)) {
-            return response()->json(['message' => 'Visitante nao encontrado'], 404);
+            return response()->json(['message' => 'Visitante nao encontrado'], 200);
         }
 
         if (Hash::check($request->senha, $visitante->senha)) {
@@ -153,10 +153,10 @@ class VisitanteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'token' => $authToken,
-                'data' => $visitante
-            ], 200);
+                'user' => $visitante
+            ], 201);
         } else {
-            return response()->json(['message' => 'Senha incorreta'], 404);
+            return response()->json(['message' => 'Senha incorreta'], 200);
         }
     }
 

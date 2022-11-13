@@ -129,7 +129,7 @@ class DiaristaController extends Controller
             return response()->json([
                 "status" => "success",
                 "token" => $token,
-                "data" => $diarista,
+                "user" => $diarista,
             ], 200);
         } else {
             return response()->json(['message' => 'Senha incorreta'], 404);
